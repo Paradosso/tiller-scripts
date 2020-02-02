@@ -12,7 +12,6 @@ class AppleStatement:
             dtype={"Transaction Date": "str", "Merchant": "str", "Category": "str", "Description": "str",
                    "Amount (USD)": "float32"},
             parse_dates=["Transaction Date"]
-
         )
 
     def head(self):
