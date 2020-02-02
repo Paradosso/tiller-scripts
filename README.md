@@ -5,10 +5,10 @@ Workflow:
 1. Download your Apple Card transactions in csv format (instructions [here](https://www.macrumors.com/how-to/export-apple-card-data-to-spreadsheet/)).
 2. From the command line, navigate to the root of this repo
 3. From the command line, issue the command:
-    `python apple-card.py tillerize --input inputfilename.csv --output outputfilename.csv --last4 1234`
+    `python apple-card.py inpufilenames - tillerize --output outputfilename.csv --last4 1234`
 
 where:
-* `inputfilename.csv` is the path to your exported Apple Card csv
+* `inputfilenames` is one or more of your exported Apple Card statements in csv format (if more than one, they will be concatenated in one output) 
 * `outputfilename.csv` is where the ready-for-Tiller csv will be
 * `1234` (optional) are the last 4 digits of your Apple Card if you care about having them right in the output csv
 

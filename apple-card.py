@@ -1,18 +1,20 @@
 import fire
 import pandas as pd
 import datetime as dt
+from functools import partial
 
 
 class AppleStatement:
 
-    def __init__(self, input):
-        self.input = pd.read_csv(
-            input,
-            usecols=["Transaction Date", "Merchant", "Category", "Description", "Amount (USD)"],
-            dtype={"Transaction Date": "str", "Merchant": "str", "Category": "str", "Description": "str",
-                   "Amount (USD)": "float32"},
-            parse_dates=["Transaction Date"]
-        )
+    def __init__(self, *args):
+        parse_apple_statement = partial(pd.read_csv,
+                                        usecols=["Transaction Date", "Merchant", "Category", "Description",
+                                                 "Amount (USD)"],
+                                        dtype={"Transaction Date": "str", "Merchant": "str", "Category": "str",
+                                               "Description": "str", "Amount (USD)": "float32"},
+                                        parse_dates=["Transaction Date"])
+        dfs = (parse_apple_statement(f) for f in args)
+        self.input = pd.concat(dfs)
 
     def head(self):
         print(self.input.head())
@@ -31,7 +33,7 @@ class AppleStatement:
         df["Account"] = "CREDIT CARD"
         df["Account_Number"] = "xxxx" + str(last4)
         df["Institution"] = "Apple"
-        df["Month"] = df["Date"].apply(func=lambda d: d.replace(day = 1))
+        df["Month"] = df["Date"].apply(func=lambda d: d.replace(day=1))
         df["Week"] = df['Date'] - pd.to_timedelta(arg=df['Date'].dt.weekday, unit='D')
         df["Transaction_ID"] = ""
         df["Full_Description"] = self.input["Description"]
